@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 885df1d9cf518187a38a8aaef35f87745800f4df raguiguemalak <malakraguigue@gmail.com> 1782990348 +0100	branch: Created from HEAD
+885df1d9cf518187a38a8aaef35f87745800f4df 93360a0f264da9293b0111314f5cd2c50ba1703d raguiguemalak <malakraguigue@gmail.com> 1783007136 +0100	commit: Ajout architecture routes/controllers/services et migration Prisma enum Category
+93360a0f264da9293b0111314f5cd2c50ba1703d 5c4d01304db002c26bac3da8699dbab91e005472 raguiguemalak <malakraguigue@gmail.com> 1783075567 +0100	commit: Ajout GET /api/kpis
+5c4d01304db002c26bac3da8699dbab91e005472 e29d485fddc52aead562391aa4f257c2d5c2706b raguiguemalak <malakraguigue@gmail.com> 1783075672 +0100	commit: ajout de forecasts dans index
+e29d485fddc52aead562391aa4f257c2d5c2706b 011d88824789fb746b1df27c1ee044c6db1a8b77 raguiguemalak <malakraguigue@gmail.com> 1783075706 +0100	commit: ajout des fichiers concernant forecasts
+011d88824789fb746b1df27c1ee044c6db1a8b77 73fd84ef51ef081040df860ff5d37ec61d3363d9 raguiguemalak <malakraguigue@gmail.com> 1783080781 +0100	commit: Finalisation routes GET /api/kpis et GET /api/forecasts avec validation horizon et quelques corrections de noms
+73fd84ef51ef081040df860ff5d37ec61d3363d9 1b3727ec6b1f139372b6f11e6438dcaa7a5e6b7e raguiguemalak <malakraguigue@gmail.com> 1783086914 +0100	commit: ajout de commentaires et suppressions de quelques lignes non demandé dans le document
+1b3727ec6b1f139372b6f11e6438dcaa7a5e6b7e 49c66b8f552ffea75f679821b2caf22535f1774c raguiguemalak <malakraguigue@gmail.com> 1783326902 +0100	commit: ajout de la fonction alert dans toutes les couches
+49c66b8f552ffea75f679821b2caf22535f1774c 9b3667de3fe506813cc09870cab50100e9ac8732 raguiguemalak <malakraguigue@gmail.com> 1783329791 +0100	commit: test pour savoir si j'ai bien compris en ajoutant une nouvelle route
