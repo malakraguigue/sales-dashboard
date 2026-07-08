@@ -1,7 +1,8 @@
 import './App.css'
+import AlertesPage from './pages/AlertesPage'
 
 function App() {
-  return <h1>Sales Dashboard</h1>
+  return <AlertesPage />
 }
 
 export default App
