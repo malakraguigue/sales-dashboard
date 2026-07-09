@@ -4,12 +4,12 @@ import AlertsTable from '../components/AlertsTable'
 function AlertesPage() {
   const { alerts, loading, error } = useAlerts()
 
-  if (loading) return <p>Chargement...</p>
-  if (error) return <p>Erreur : {error}</p>
+  if (loading) return <p className="p-8">Chargement...</p>
+  if (error) return <p className="p-8">Erreur : {error}</p>
 
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-4">Alertes</h1>
+    <div className="min-h-screen p-8 bg-[var(--page)]">
+      <h1 className="mb-6">Alertes</h1>
       <AlertsTable alerts={alerts} />
     </div>
   )
