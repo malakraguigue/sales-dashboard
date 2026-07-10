@@ -1,9 +1,10 @@
 const prisma = require('../prisma/client');
 
-async function getSales({ product, region, startDate, endDate }) {
+async function getSales({ product, region, category, startDate, endDate }) {
   const where = {};
   if (product) where.product = product;
   if (region) where.region = region;
+  if (category) where.category = category;
   if (startDate || endDate) {
     where.sale_date = {};
     if (startDate) where.sale_date.gte = new Date(startDate);
