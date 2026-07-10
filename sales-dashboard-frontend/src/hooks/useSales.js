@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { fetchSales, fetchSalesByCategory, fetchSalesById } from '../services/salesService'
 
-export function useSales({ product, region, startDate, endDate } = {}){
+export function useSales({ product, region, category, startDate, endDate } = {}){
 const [sales,setSales]=useState([]);
 const [loading, setLoading] = useState(true)
 const [error, setError] = useState(null)
 useEffect(()=>{
-   fetchSales({ product, region, startDate, endDate })
+   fetchSales({ product, region, category, startDate, endDate })
     .then((data)=>{
       setSales(data),
       setLoading(false)
@@ -15,7 +15,7 @@ useEffect(()=>{
       setError(err.message)
       setLoading(false)
     })
-},[product, region, startDate, endDate])//relance cette requête chaque fois que product, region, startDate OU endDate change de valeur
+},[product, region, category, startDate, endDate])//relance cette requête chaque fois que product, region, category, startDate OU endDate change de valeur
 
 return { sales, loading, error }
 }

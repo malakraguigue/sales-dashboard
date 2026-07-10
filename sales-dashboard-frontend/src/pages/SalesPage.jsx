@@ -6,10 +6,11 @@ import FilterBar from '../components/FilterBar'
 function SalesPage() {
   const [product, setProduct] = useState('')
   const [region, setRegion] = useState('')
+  const [category, setCategory] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
-  const { sales, loading, error } = useSales({ product, region, startDate, endDate })
+  const { sales, loading, error } = useSales({ product, region, category, startDate, endDate })
 
   if (loading) return <p className="p-8">Chargement...</p>
   if (error) return <p className="p-8">Erreur : {error}</p>
@@ -24,6 +25,7 @@ function SalesPage() {
       <FilterBar
         product={product} setProduct={setProduct}
         region={region} setRegion={setRegion}
+        category={category} setCategory={setCategory}
         startDate={startDate} setStartDate={setStartDate}
         endDate={endDate} setEndDate={setEndDate}
       />

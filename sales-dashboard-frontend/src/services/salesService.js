@@ -1,7 +1,7 @@
 import api from './api'
-async function fetchSales({ product, region, startDate, endDate } = {}) {
+async function fetchSales({ product, region, category, startDate, endDate } = {}) {
     const response=await api.get('/sales',{
-  params: { product, region, startDate, endDate },
+  params: { product, region, category, startDate, endDate },
 })
     return response.data
 }
