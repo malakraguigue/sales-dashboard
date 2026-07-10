@@ -16,4 +16,3 @@ useEffect(()=>{
 },[product, region, horizon])
 return { forecasts, loading, error }
 }
-export {useForecasts}
