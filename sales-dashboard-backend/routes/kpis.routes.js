@@ -1,6 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const kpisController = require('../controllers/kpis.controller');
-
+/**
+ * @swagger
+ * /api/kpis:
+ *   get:
+ *     summary: Récupère les indicateurs clés (KPIs)
+ *     responses:
+ *       200:
+ *         description: Succès
+ */
 router.get('/', kpisController.getKpis);
 module.exports = router;
