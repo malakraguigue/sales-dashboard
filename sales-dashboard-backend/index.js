@@ -7,9 +7,11 @@ const forecastsRoutes=require('./routes/forecasts.routes')
 const alertsRoutes=require('./routes/alerts.routes')
 const app = express();
 const PORT = process.env.PORT || 3000;
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./swagger')
 
 app.use(cors());
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.get('/', (req, res) => {
   res.send('API Sales Dashboard opérationnelle');
 });
