@@ -8,6 +8,8 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '..', 'sales-dashboard-backe
 
 DATABASE_URL = os.environ['DATABASE_URL']
 HORIZON_DAYS = 90
+ALERT_LOOKBACK_DAYS = 30
+
 def get_categories_and_regions(conn):
     categories = pd.read_sql_query("SELECT DISTINCT category FROM sales", conn)['category'].tolist()
     regions = pd.read_sql_query("SELECT DISTINCT region FROM sales", conn)['region'].tolist()
@@ -30,8 +32,26 @@ def forecast_one_series(df):
     model.fit(df)
     future = model.make_future_dataframe(periods=HORIZON_DAYS)
     forecast = model.predict(future)
-    last_historical_date = df['ds'].max()
-    return forecast[forecast['ds'] > last_historical_date]
+    return forecast
+
+def classify_severity(deviation_percent):
+    abs_dev = abs(deviation_percent)
+    if abs_dev >= 50:
+        return 'high'
+    if abs_dev >= 25:
+        return 'medium'
+    if abs_dev >= 10:
+        return 'low'
+    return None
+
+
+def detect_alerts(df, forecast):
+    lookback_start = df['ds'].max() - pd.Timedelta(days=ALERT_LOOKBACK_DAYS)
+    recent_actual = df[df['ds'] > lookback_start]
+    merged = recent_actual.merge(forecast[['ds', 'yhat']], on='ds', how='inner')
+    merged['deviation_percent'] = (merged['y'] - merged['yhat']) / merged['yhat'] * 100
+    return merged
+
 def main():
     conn = psycopg2.connect(DATABASE_URL)
     categories, regions = get_categories_and_regions(conn)
@@ -44,7 +64,13 @@ def main():
             (forecast_date, product, region, predicted_amount, lower_bound, upper_bound, model_name)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
+    cur.execute("DELETE FROM sales_alerts")
 
+    alert_insert_query = """
+    INSERT INTO sales_alerts
+        (alert_date, product, region, actual_amount, predicted_amount, deviation_percent, severity)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
     for category in categories:
         for region in regions:
             df = load_daily_sales(conn, category, region)
@@ -52,7 +78,9 @@ def main():
                 print(f"Ignoré (pas assez de données) : {category} / {region}")
                 continue
 
-            future_forecast = forecast_one_series(df)
+            forecast = forecast_one_series(df)
+            future_forecast = forecast[forecast['ds'] > df['ds'].max()]
+
             for _, row in future_forecast.iterrows():
                 cur.execute(insert_query, (
                     row['ds'].date(),
@@ -63,7 +91,24 @@ def main():
                     round(row['yhat_upper'], 2),
                     'prophet',
                 ))
-            print(f"OK : {category} / {region} -> {len(future_forecast)} jours prévus")
+            alerts = detect_alerts(df, forecast)
+            alert_count = 0
+            for _, row in alerts.iterrows():
+                severity = classify_severity(row['deviation_percent'])
+                if severity is None:
+                    continue
+                cur.execute(alert_insert_query, (
+                    row['ds'].date(),
+                    category,
+                    region,
+                    round(row['y'], 2),
+                    round(row['yhat'], 2),
+                    round(row['deviation_percent'], 2),
+                    severity,
+                ))
+                alert_count += 1
+            print(f"OK : {category} / {region} -> {len(future_forecast)} jours prévus, {alert_count} alertes")
+    
 
     conn.commit()
     cur.close()
