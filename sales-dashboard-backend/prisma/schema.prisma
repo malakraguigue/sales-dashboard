@@ -45,3 +45,24 @@ enum Category {
   OfficeSupplies @map("Office Supplies")
   Technology
 } 
+model User{
+  id String @id @default(uuid())
+  email String @unique
+  password String 
+  firstName String
+  lastName String
+  role Role @default(USER)
+  isActive  Boolean  @default(true)
+  resetToken String?
+  resetTokenExpiry DateTime?
+  refreshToken String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+enum Role {
+  USER
+  ADMIN
+  MANAGER
+}
