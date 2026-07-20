@@ -1,6 +1,6 @@
 const prisma = require('../prisma/client');
 async function getKpis() {
-  const [totalRevenue, totalQuantity, bestProductGroup, bestRegionGroup] = await Promise.all([
+  const [totalRevenue, totalQuantity, bestProductGroup, bestRegionGroup, revenueByCategoryGroup, revenueByRegionGroup] = await Promise.all([
     prisma.sales.aggregate({ _sum: { amount: true } }),
     prisma.sales.aggregate({ _sum: { quantity: true } }),
     prisma.sales.groupBy({//combien d'argent chaque produit a-t-il généré
@@ -14,6 +14,16 @@ async function getKpis() {
       _sum: { amount: true },
       orderBy: { _sum: { amount: 'desc' } },
       take: 1,
+    }),
+    prisma.sales.groupBy({//revenu par catégorie, pour le graphique en barres
+      by: ['category'],
+      _sum: { amount: true },
+      orderBy: { _sum: { amount: 'desc' } },
+    }),
+    prisma.sales.groupBy({//revenu par région, pour le graphique en barres
+      by: ['region'],
+      _sum: { amount: true },
+      orderBy: { _sum: { amount: 'desc' } },
     }),
   ]);
 
@@ -56,6 +66,8 @@ async function getKpis() {
     bestProduct: bestProductGroup[0]?.product || null,
     bestRegion: bestRegionGroup[0]?.region || null,
     growthRate,
+    revenueByCategory: revenueByCategoryGroup.map((g) => ({ label: g.category, value: g._sum.amount || 0 })),
+    revenueByRegion: revenueByRegionGroup.map((g) => ({ label: g.region, value: g._sum.amount || 0 })),
   };
 }
 

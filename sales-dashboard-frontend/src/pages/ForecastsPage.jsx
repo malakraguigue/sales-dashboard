@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useForecasts } from '../hooks/useForecasts'
 import ForecastsTable from '../components/ForecastsTable'
+import ForecastChart from '../components/ForecastChart'
 
 const horizonClass = (active) =>
   `px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
@@ -25,6 +26,7 @@ function ForecastsPage() {
           </button>
         ))}
       </div>
+      <ForecastChart forecasts={forecasts} />
       <ForecastsTable forecasts={forecasts} />
     </div>
   )

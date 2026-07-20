@@ -2,7 +2,7 @@ function KpisTable({ titre, valeur }) {
   return (
     <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-4">
       <p className="text-sm text-[var(--text-secondary)]">{titre}</p>
-      <p className="text-2xl font-semibold text-[var(--text)]">{valeur}</p>
+      <p className="text-2xl font-semibold text-[var(--text)] break-words">{valeur}</p>
     </div>
   )
 }
