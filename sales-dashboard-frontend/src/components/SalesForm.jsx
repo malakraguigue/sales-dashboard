@@ -33,7 +33,7 @@ function SalesForm({addSale}){
            <div>
              <label className={labelClass}>Catégorie</label>
              <select name="category" value={form.category} onChange={handleChange} className={inputClass}>
-                <option value="">-- Choisir --</option>
+                <option value="">Choisir </option>
                 <option value="Furniture">Furniture</option>
                 <option value="OfficeSupplies">Office Supplies</option>
                 <option value="Technology">Technology</option>
