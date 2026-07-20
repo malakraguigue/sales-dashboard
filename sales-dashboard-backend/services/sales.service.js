@@ -10,7 +10,7 @@ async function getSales({ product, region, category, startDate, endDate }) {
     if (startDate) where.sale_date.gte = new Date(startDate);
     if (endDate) where.sale_date.lte = new Date(endDate);
   }
-  return prisma.sales.findMany({ where });
+  return prisma.sales.findMany({ where, orderBy: { sale_date: 'desc' } });
 }
 
 async function getSaleById(id) {
@@ -22,4 +22,9 @@ async function getSalesByCategory(category) {
 async function getSalesByRegion(region){
   return prisma.sales.findMany({where:{region}});
 }
-module.exports = { getSales, getSaleById, getSalesByCategory,getSalesByRegion };
+async function ajoutSale(SalesArray){
+  return prisma.sales.create({
+    data:SalesArray
+  });
+}
+module.exports = { getSales, getSaleById, getSalesByCategory,getSalesByRegion,ajoutSale };

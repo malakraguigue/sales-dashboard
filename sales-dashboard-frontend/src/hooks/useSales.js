@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { fetchSales, fetchSalesByCategory, fetchSalesById } from '../services/salesService'
-
+import { fetchSales, fetchSalesByCategory, fetchSalesById , createSales} from '../services/salesService'
+// Hook responsable uniquement du fetch des ventes (reçoit les filtres, ne les possède pas)
 export function useSales({ product, region, category, startDate, endDate } = {}){
 const [sales,setSales]=useState([]);
 const [loading, setLoading] = useState(true)
@@ -19,8 +19,11 @@ useEffect(()=>{
     })
    return () => controller.abort()
 },[product, region, category, startDate, endDate])//relance cette requête chaque fois que product, region, category, startDate OU endDate change de valeur
-
-return { sales, loading, error }
+  async function addSale(sale){
+  const created = await createSales(sale)
+  setSales((prevSales) => [created, ...prevSales])
+}
+return { sales, loading, error ,addSale }
 }
 
 export function useSalesByCategory(category){

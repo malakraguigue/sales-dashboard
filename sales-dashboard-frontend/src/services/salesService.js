@@ -14,4 +14,8 @@ async function fetchSalesByCategory(category, signal) {
   const response = await api.get(`/sales/category/${category}`, { signal })
   return response.data
 }
-export {fetchSales,fetchSalesByCategory,fetchSalesById}
+async function createSales(sale){
+   const response = await api.post('/sales',sale)
+   return response.data
+}
+export {fetchSales,fetchSalesByCategory,fetchSalesById,createSales}

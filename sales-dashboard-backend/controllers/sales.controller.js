@@ -49,5 +49,13 @@ try{
   res.status(500).json({error:'Erreur serveur'});
 }
 }
-
-module.exports = { getSales, getSaleById, getSalesByCategory ,getSalesByRegion };
+async function ajoutSale(req,res){
+try{
+  const sale = await salesService.ajoutSale(req.body)
+  res.json(sale);
+}catch(err){
+  console.error(err);
+  res.status(500).json({error:'Erreur serveur'});
+}
+}
+module.exports = { getSales, getSaleById, getSalesByCategory ,getSalesByRegion , ajoutSale};
