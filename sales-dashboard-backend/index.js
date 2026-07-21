@@ -5,6 +5,7 @@ const salesRoutes = require('./routes/sales.routes');
 const kpisRoutes = require('./routes/kpis.routes');
 const forecastsRoutes=require('./routes/forecasts.routes')
 const alertsRoutes=require('./routes/alerts.routes')
+const authRoutes=require('./routes/auth.routes')
 const app = express();
 const PORT = process.env.PORT || 3000;
 const swaggerUi = require('swagger-ui-express')
@@ -17,7 +18,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.get('/', (req, res) => {
   res.send('API Sales Dashboard opérationnelle');
 });
-
+app.use('/api/auth',authRoutes)
 app.use('/api/sales', salesRoutes);
 app.use('/api/kpis', kpisRoutes);
 app.use('/api/forecasts',forecastsRoutes);
