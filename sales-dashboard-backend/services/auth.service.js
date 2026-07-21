@@ -27,13 +27,13 @@ return created
 async function login({ email, password }){
 const ExistingUser= await prisma.user.findUnique({where:{email}})
 if(!ExistingUser){
-    const error = new Error('Aucun utilisateur avec cet email')
+    const error = new Error('Email ou mot de passe incorrect')
     error.code = 'USER_NOT_FOUND'
     throw error
 }
 const isValid= await bcrypt.compare(password, ExistingUser.password)
 if(!isValid){
-    const error = new Error('mot de passe incorrect')
+    const error = new Error('Email ou mot de passe incorrect')
     error.code = 'WRONG_PASSWORD'
     throw error
 }
