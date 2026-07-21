@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
-const authenticate=(shema)=>(req,res,next) => {
- const token = req.cookies.accessToken
+function authenticate(req, res, next) {
+ const token = req.cookies.JWT_ACCESS_SECRET
 
   if (!token) {
     return res.status(401).json({ error: 'Non authentifié' })
