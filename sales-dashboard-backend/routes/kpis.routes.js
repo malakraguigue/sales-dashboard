@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const kpisController = require('../controllers/kpis.controller');
+const authenticate = require('../middleware/authenticate.middleware')
 /**
  * @swagger
  * /api/kpis:

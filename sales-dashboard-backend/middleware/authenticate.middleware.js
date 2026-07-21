@@ -14,4 +14,4 @@ function authenticate(req, res, next) {
      return res.status(401).json({ error: 'Token invalide ou expiré' })
   }
 }
-module.exports = anthenticate;
+module.exports = authenticate;
