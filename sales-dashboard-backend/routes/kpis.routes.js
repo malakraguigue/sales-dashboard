@@ -10,5 +10,5 @@ const kpisController = require('../controllers/kpis.controller');
  *       200:
  *         description: Succès
  */
-router.get('/', kpisController.getKpis);
+router.get('/',authenticate, kpisController.getKpis);
 module.exports = router;

@@ -2,5 +2,5 @@ const express = require('express');
 const router = express.Router();
 const alertsController=require('../controllers/alerts.controller')
 
-router.get('/', alertsController.getAlerts);
+router.get('/',authenticate, alertsController.getAlerts);
 module.exports = router;
