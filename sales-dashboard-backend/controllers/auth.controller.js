@@ -4,7 +4,7 @@ async function register(req,res){
 const{firstName,lastName,email,password}=req.body
 try{
  const inscription= await authService.register({firstName,lastName,email,password})
- res.json(inscription)
+ res.status(201)
 }catch(error){
     if(error.code === 'EMAIL_TAKEN'){
       return res.status(409).json({ error: error.message }); // 409 Conflict

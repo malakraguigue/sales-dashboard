@@ -12,8 +12,11 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('./swagger')
 const { spawn } = require('child_process')
 const path = require('path')
+const cookieParser = require('cookie-parser')
+
 app.use(express.json())
 app.use(cors());
+app.use(cookieParser())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.get('/', (req, res) => {
   res.send('API Sales Dashboard opérationnelle');
