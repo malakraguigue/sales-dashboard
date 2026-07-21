@@ -21,7 +21,12 @@ const created=await prisma.user.create ({
     }       
 })
 
-return created
+return {user: {
+    email: created.email,
+    firstName: created.firstName,
+    lastName: created.lastName,
+    role: created.role
+  } }
 }
 
 async function login({ email, password }){

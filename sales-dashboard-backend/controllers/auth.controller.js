@@ -11,6 +11,7 @@ try{
     }
     return res.status(500).json({error:'Erreur serveur'})
 }
+
 }
 async function login(req,res){
 const{email, password}=req.body
@@ -24,14 +25,11 @@ res.cookie('refreshToken',refreshToken,{
 })
 res.json({ message: 'Connecté', user })
 }catch(error){
- if(error.code === 'EMAIL_TAKEN'){
-      return res.status(409).json({ error: error.message }); // 409 Conflict
-    }
-    else if(error.code === 'USER_NOT_FOUND'){ 
-      return res.status(409).json({ error: error.message });
+    if(error.code === 'USER_NOT_FOUND'){ 
+      return res.status(401).json({ error: error.message });
     }
     else if(error.code ==='WRONG_PASSWORD'){
-        return res.status(409).json({error: error.message})
+        return res.status(401).json({error: error.message})
     }
     return res.status(500).json({error:'Erreur serveur'})
 }
