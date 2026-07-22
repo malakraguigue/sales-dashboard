@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
+const authenticate = require('../middleware/authenticate.middleware')
 
 /**
  * @swagger
@@ -55,4 +56,16 @@ router.post("/register",authController.register)
  *         description: Email ou mot de passe incorrect
  */
 router.post("/login",authController.login)
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: récuperer mes données 
+ *     responses:
+ *       200:
+ *         description: Informations de l'utilisateur connecté
+ *       401:
+ *         description: utilisateur non connecté
+ */
+router.get("/me",authenticate,authController.getMe)//cette route servira le frontend afin qu'il sache qui est connecté apres un refresh 
 module.exports = router;

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 function authenticate(req, res, next) {
- const token = req.cookies.accessToken
+ const token = req.cookies.accessToken// récupère le JWT depuis le cookie HttpOnly
 
   if (!token) {
     return res.status(401).json({ error: 'Non authentifié' })

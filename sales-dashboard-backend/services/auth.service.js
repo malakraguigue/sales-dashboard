@@ -60,4 +60,17 @@ return { accessToken, refreshToken, user: {
     role: ExistingUser.role
   } }
 }
-module.exports={register,login}
+async function getMe(id) {
+const User = await prisma.user.findUnique({where:{id}})
+    if(!User){
+    const error = new Error('usernotfound')
+    error.code = 'USER_NOT_FOUND'
+    throw error
+}
+return {data:{ id: User.id,
+    email: User.email,
+    firstName: User.firstName,
+    lastName: User.lastName,
+    role: User.role}}
+}
+module.exports={register,login,getMe}

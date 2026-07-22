@@ -34,4 +34,15 @@ res.json({ message: 'Connecté', user })
     return res.status(500).json({error:'Erreur serveur'})
 }
 }
-module.exports={register,login}
+async function getMe(req,res){
+    try{
+       const user=await authService.getMe(req.user.userId)// req.user = infos du JWT décodé, injectées par authMiddleware (ex: { id, role })
+       res.status(200).json(user)
+    }catch(error){
+        if(error.code === 'USER_NOT_FOUND'){ 
+            return res.status(401).json({ error: error.message });
+        }
+           return res.status(500).json({ error: 'Erreur serveur' })
+    }     
+}
+module.exports={register,login,getMe}
