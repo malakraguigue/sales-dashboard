@@ -4,7 +4,7 @@ const salesController = require('../controllers/sales.controller');
 const validate = require('../middleware/validate.middleware')
 const { SalesPayloadSchema } = require('../shemas/sales.shema');
 const authenticate = require('../middleware/authenticate.middleware')
-
+const upload = require('../middleware/upload.middleware')
 /**
  * @swagger
  * /api/sales:
@@ -115,4 +115,8 @@ router.get('/region/:region',salesController.getSalesByRegion);
  *         description: Non authentifié
  */
 router.post('/',authenticate,validate(SalesPayloadSchema),salesController.ajoutSale);
+
+router.post('/import',authenticate,upload.single('file'),salesController.importSale);
+
+
 module.exports = router;

@@ -58,4 +58,17 @@ try{
   res.status(500).json({error:'Erreur serveur'});
 }
 }
-module.exports = { getSales, getSaleById, getSalesByCategory ,getSalesByRegion , ajoutSale};
+async function importSale(req,res){
+try{
+  if (!req.file) {
+    return res.status(400).json({ error: 'Aucun fichier envoyé' })
+  }
+  const importation=await salesService.importSale(req.file)
+  res.json(importation)
+}
+catch(err){
+  console.error(err);
+  res.status(500).json({error:'Erreur serveur'});
+}
+}
+module.exports = { getSales, getSaleById, getSalesByCategory ,getSalesByRegion , ajoutSale,importSale};
