@@ -1,5 +1,6 @@
 const prisma = require('../prisma/client');
 const xlsx = require('xlsx')
+const { SalesPayloadSchema } = require('../shemas/sales.shema')
 async function getSales({ product, region, category, startDate, endDate }) {
   const where = {};
   if (product) where.product = product;
@@ -32,5 +33,21 @@ const classeur = xlsx.read(file.buffer, { type: 'buffer' })//décode ce contenu 
 const nomFeuille = classeur.SheetNames[0]//un tableau contenant les noms des feuilles du fichier (ex: ["Feuille1", "Feuille2"]) ; [0] prend la première.
 const feuille = classeur.Sheets[nomFeuille]// accède au contenu de cette feuille précise (un objet interne au format propre à xlsx, pas encore exploitable directement).
 const lignes = xlsx.utils.sheet_to_json(feuille)//transforme cette feuille en un tableau d'objets JS classiques — une ligne Excel = un objet, les en-têtes de colonnes deviennent les clés (ex: {product: "...", region: "...", ...}).
+const validRows = []
+const errors = []
+lignes.forEach((ligne, index) => {
+  const resultat = SalesPayloadSchema.safeParse(ligne)
+  if (resultat.success) {
+    validRows.push(resultat.data)
+  } else {
+    errors.push({ ligne: index + 2, erreurs: resultat.error.issues })
+  }
+})
+const resultat = await prisma.sales.createMany({ data: validRows })
+return {
+  imported: validRows.length,
+  rejected: errors.length,
+  errors
+}
 }
 module.exports = { getSales, getSaleById, getSalesByCategory,getSalesByRegion,ajoutSale,importSale };
