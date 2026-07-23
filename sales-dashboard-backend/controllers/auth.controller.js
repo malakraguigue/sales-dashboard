@@ -4,7 +4,7 @@ async function register(req,res){
 const{firstName,lastName,email,password}=req.body
 try{
  const inscription= await authService.register({firstName,lastName,email,password})
- res.status(201)
+ res.status(201).json(inscription)
 }catch(error){
     if(error.code === 'EMAIL_TAKEN'){
       return res.status(409).json({ error: error.message }); // 409 Conflict
@@ -45,4 +45,9 @@ async function getMe(req,res){
            return res.status(500).json({ error: 'Erreur serveur' })
     }     
 }
-module.exports={register,login,getMe}
+async function logout(req, res) {
+    res.clearCookie('accessToken')
+    res.clearCookie('refreshToken')
+    res.json({ message: 'Déconnecté' })
+}
+module.exports={register,login,getMe,logout}

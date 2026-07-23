@@ -67,5 +67,16 @@ router.post("/login",authController.login)
  *       401:
  *         description: utilisateur non connecté
  */
-router.get("/me",authenticate,authController.getMe)//cette route servira le frontend afin qu'il sache qui est connecté apres un refresh 
+router.get("/me",authenticate,authController.getMe)//cette route servira le frontend afin qu'il sache qui est connecté apres un refresh
+
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Deconnecte l'utilisateur (efface les cookies de session)
+ *     responses:
+ *       200:
+ *         description: Déconnecté
+ */
+router.post("/logout",authenticate,authController.logout)
 module.exports = router;

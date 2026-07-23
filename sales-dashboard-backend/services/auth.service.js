@@ -67,10 +67,11 @@ const User = await prisma.user.findUnique({where:{id}})
     error.code = 'USER_NOT_FOUND'
     throw error
 }
-return {data:{ id: User.id,
+return {
+    id: User.id,
     email: User.email,
     firstName: User.firstName,
     lastName: User.lastName,
-    role: User.role}}
+    role: User.role}
 }
 module.exports={register,login,getMe}

@@ -4,6 +4,8 @@ import SalesPage from './pages/SalesPage'
 import AlertesPage from './pages/AlertesPage'
 import KpisPage from './pages/KpisPage'
 import ForecastsPage from './pages/ForecastsPage'
+import AuthPage from './pages/AuthPage'
+import { useAuth } from './hooks/useAuth'
 const tabClass = (active) =>
   `px-4 py-2 rounded-md text-sm font-medium transition-colors ${
     active
@@ -13,7 +15,9 @@ const tabClass = (active) =>
 
 function App() {
   const [page, setPage] = useState('sales')
-
+  const { user, loading, SignUp, LogIn, LogOut } = useAuth()
+if (loading) return <p>Chargement...</p>
+if (!user) return <AuthPage SignUp={SignUp} LogIn={LogIn} />
   return (
     <div>
       <nav className="flex gap-2 p-4 border-b border-[var(--border)] bg-[var(--surface)]">
@@ -31,6 +35,12 @@ function App() {
          <button className={tabClass(page === 'forecasts')} onClick={() => setPage('forecasts')}>
           Prévisions
         </button>
+        <div className="ml-auto flex items-center gap-3">
+          <span className="text-sm text-[var(--text-secondary)]">{user.firstName}</span>
+          <button onClick={LogOut} className="text-sm text-[var(--accent)] underline">
+            Se déconnecter
+          </button>
+        </div>
       </nav>
       {page === 'sales' && <SalesPage />}     {/* Affiche SalesPage uniquement si l'onglet actif est 'sales' */}
       {page === 'alertes' && <AlertesPage />}
