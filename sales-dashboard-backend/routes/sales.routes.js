@@ -50,7 +50,7 @@ router.get('/',authenticate, salesController.getSales);
  *       404:
  *         description: Vente introuvable
  */
-router.get('/:id', salesController.getSaleById);
+router.get('/:id', authenticate, salesController.getSaleById);
 
 /**
  * @swagger
@@ -68,7 +68,7 @@ router.get('/:id', salesController.getSaleById);
  *       400:
  *         description: Catégorie invalide
  */
-router.get('/category/:category', salesController.getSalesByCategory);
+router.get('/category/:category', authenticate, salesController.getSalesByCategory);
 
 /**
  * @swagger
@@ -84,7 +84,7 @@ router.get('/category/:category', salesController.getSalesByCategory);
  *       200:
  *         description: Succès
  */
-router.get('/region/:region',salesController.getSalesByRegion);
+router.get('/region/:region', authenticate, salesController.getSalesByRegion);
 
 /**
  * @swagger

@@ -4,7 +4,7 @@ const CATEGORIES_VALIDES = ['Furniture', 'OfficeSupplies', 'Technology'];
 
 async function getSales(req, res) {
   try {
-    const sales = await salesService.getSales(req.query);//salesServive c'est elle parceque , on a stocke le require dans salesService 
+    const sales = await salesService.getSales(req.query,req.user.companyId);//salesServive c'est elle parceque , on a stocke le require dans salesService 
     res.json(sales);
   } catch (err) {
     console.error(err);
@@ -14,7 +14,7 @@ async function getSales(req, res) {
 
 async function getSaleById(req, res) {
   try {
-    const sale = await salesService.getSaleById(req.params.id);
+    const sale = await salesService.getSaleById(req.params.id,req.user.companyId);
     if (!sale) {
       return res.status(404).json({ error: 'Vente introuvable' });
     }
@@ -32,7 +32,7 @@ async function getSalesByCategory(req, res) {
   }
 
   try {
-    const sales = await salesService.getSalesByCategory(category);
+    const sales = await salesService.getSalesByCategory(category, req.user.companyId);
     res.json(sales);
   } catch (err) {
     console.error(err);
@@ -42,7 +42,7 @@ async function getSalesByCategory(req, res) {
 async function getSalesByRegion(req,res){
 const { region } = req.params;
 try{
-  const sales = await salesService.getSalesByRegion(region);
+  const sales = await salesService.getSalesByRegion(region, req.user.companyId);
   res.json(sales);
 }catch(err){
   console.error(err);
@@ -51,7 +51,7 @@ try{
 }
 async function ajoutSale(req,res){
 try{
-  const sale = await salesService.ajoutSale(req.body)
+  const sale = await salesService.ajoutSale(req.body,req.user.companyId)
   res.json(sale);
 }catch(err){
   console.error(err);
@@ -63,7 +63,7 @@ try{
   if (!req.file) {
     return res.status(400).json({ error: 'Aucun fichier envoyé' })
   }
-  const importation=await salesService.importSale(req.file)
+  const importation=await salesService.importSale(req.file,req.user.companyId)
   res.json(importation)
 }
 catch(err){

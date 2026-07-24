@@ -1,8 +1,8 @@
 const prisma = require('../prisma/client');
 const xlsx = require('xlsx')
 const { SalesPayloadSchema } = require('../shemas/sales.shema')
-async function getSales({ product, region, category, startDate, endDate }) {
-  const where = {};
+async function getSales({ product, region, category, startDate, endDate }, companyId) {
+  const where = { companyId };
   if (product) where.product = product;
   if (region) where.region = region;
   if (category) where.category = category;
@@ -14,21 +14,21 @@ async function getSales({ product, region, category, startDate, endDate }) {
   return prisma.sales.findMany({ where, orderBy: { sale_date: 'desc' } });
 }
 
-async function getSaleById(id) {
-  return prisma.sales.findUnique({ where: { id: Number(id) } });
+async function getSaleById(id, companyId) {
+  return prisma.sales.findFirst({ where: { id: Number(id), companyId } });
 }
-async function getSalesByCategory(category) {
-  return prisma.sales.findMany({ where: { category } });
+async function getSalesByCategory(category, companyId) {
+  return prisma.sales.findMany({ where: { category, companyId } });
 }
-async function getSalesByRegion(region){
-  return prisma.sales.findMany({where:{region}});
+async function getSalesByRegion(region, companyId){
+  return prisma.sales.findMany({where:{region, companyId}});
 }
-async function ajoutSale(SalesArray){
+async function ajoutSale(SalesArray, companyId){
   return prisma.sales.create({
-    data:SalesArray
+    data:{ ...SalesArray, companyId }
   });
 }
-async function importSale(file){
+async function importSale(file, companyId){
 const classeur = xlsx.read(file.buffer, { type: 'buffer' })//décode ce contenu binaire et renvoie un classeur — un objet représentant tout le fichier Excel (toutes ses feuilles/onglets).
 const nomFeuille = classeur.SheetNames[0]//un tableau contenant les noms des feuilles du fichier (ex: ["Feuille1", "Feuille2"]) ; [0] prend la première.
 const feuille = classeur.Sheets[nomFeuille]// accède au contenu de cette feuille précise (un objet interne au format propre à xlsx, pas encore exploitable directement).
@@ -38,7 +38,7 @@ const errors = []
 lignes.forEach((ligne, index) => {
   const resultat = SalesPayloadSchema.safeParse(ligne)
   if (resultat.success) {
-    validRows.push(resultat.data)
+    validRows.push({...resultat.data, companyId })
   } else {
     errors.push({ ligne: index + 2, erreurs: resultat.error.issues })
   }
