@@ -6,7 +6,7 @@ const labelClass = 'block text-sm text-[var(--text-secondary)] mb-1'
 function LoginForm({SignUp, LogIn}) {
     const [mode, setMode] = useState('SignUp')
     const [form, setForm] = useState({
-       firstName:'', lastName:'', email:'', password:''
+       firstName:'', lastName:'', email:'', password:'',companyName:''
     })
     const [formError, setFormError] = useState(null)
 
@@ -20,10 +20,10 @@ async function handleSubmit(e) {
     try{
       if (mode === 'SignUp') {
         await SignUp(payload)
-         setForm({ firstName:'', lastName:'', email:'', password:''})
+         setForm({ firstName:'', lastName:'', email:'', password:'',companyName:''})
     } else {
         await LogIn({ email: form.email, password: form.password })
-         setForm({ firstName:'', lastName:'', email:'', password:''})
+         setForm({ firstName:'', lastName:'', email:'', password:'',companyName:''})
     }
     }catch(err){
      setFormError(err.response?.data?.error || 'Une erreur est survenue')
@@ -46,6 +46,10 @@ async function handleSubmit(e) {
                <div>
                  <label className={labelClass}>Nom</label>
                  <input type="text" name="lastName" placeholder="entrez votre nom" value={form.lastName} onChange={handleChange} className={inputClass} />
+               </div>
+               <div>
+                 <label className={labelClass}>Entreprise</label>
+                 <input type="text" name="companyName" placeholder="entrez le nom de votre Entreprise" value={form.companyName} onChange={handleChange} className={inputClass} />
                </div>
              </>
            )}

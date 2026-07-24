@@ -1,6 +1,6 @@
 import api from  './api'
-async function register({ email, password, firstName, lastName }={}){
-const response=await api.post('/auth/register',{email, password, firstName, lastName})
+async function register({ email, password, firstName, lastName ,companyName}={}){
+const response=await api.post('/auth/register',{email, password, firstName, lastName,companyName})
 return response.data
 }
 async function login({email,password}={}){

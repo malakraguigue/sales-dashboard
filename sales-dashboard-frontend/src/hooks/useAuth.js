@@ -15,8 +15,8 @@ useEffect(()=>{
     })
 },[])
 //.user parce que login/register renvoient un objet enveloppé — {message, user: {...}} pour login, {user: {...}} pour register
-async function SignUp({ email, password, firstName, lastName }={}) {
-    await register({ email, password, firstName, lastName })
+async function SignUp({ email, password, firstName, lastName,companyName }={}) {
+    await register({ email, password, firstName, lastName,companyName })
     await LogIn({ email, password })
 }
 async function LogIn({email,password}={}){
