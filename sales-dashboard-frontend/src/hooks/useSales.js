@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchSales, fetchSalesByCategory, fetchSalesById , createSales} from '../services/salesService'
+import { fetchSales, fetchSalesByCategory, fetchSalesById , createSales, importSales as importSalesFile} from '../services/salesService'
 // Hook responsable uniquement du fetch des ventes (reçoit les filtres, ne les possède pas)
 export function useSales({ product, region, category, startDate, endDate } = {}){
 const [sales,setSales]=useState([]);
@@ -23,7 +23,13 @@ useEffect(()=>{
   const created = await createSales(sale)
   setSales((prevSales) => [created, ...prevSales])
 }
-return { sales, loading, error ,addSale }
+  async function importSales(file){
+  const resume = await importSalesFile(file)
+  const data = await fetchSales({ product, region, category, startDate, endDate })
+  setSales(data)
+  return resume
+}
+return { sales, loading, error ,addSale, importSales }
 }
 
 export function useSalesByCategory(category){
