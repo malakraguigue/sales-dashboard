@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-async function register({ email, password, firstName, lastName }){
+async function register({ email, password, firstName, lastName ,companyName}){
 const ExistingUser= await prisma.user.findUnique({where:{email}})
 if(ExistingUser){
     const error = new Error('Un compte existe déjà avec cet email')
@@ -12,12 +12,16 @@ if(ExistingUser){
 }
 const salt= await bcrypt.genSalt(10)
 const hashedPassword=await bcrypt.hash(password,salt)
+const company = await prisma.company.create({ data: { name: companyName } })
 const created=await prisma.user.create ({
     data: {
          email, 
          password : hashedPassword,
          firstName, 
-         lastName 
+         lastName ,
+         role : 'ADMIN',
+         companyId: company.id
+
     }       
 })
 
@@ -25,7 +29,8 @@ return {user: {
     email: created.email,
     firstName: created.firstName,
     lastName: created.lastName,
-    role: created.role
+    role:'ADMIN',
+    companyId: company.id
   } }
 }
 
@@ -43,12 +48,12 @@ if(!isValid){
     throw error
 }
 const accessToken = jwt.sign(
-    { userId: ExistingUser.id, role: ExistingUser.role },
+    { userId: ExistingUser.id, role: ExistingUser.role ,companyId: ExistingUser.companyId},
     process.env.JWT_ACCESS_SECRET,
     { expiresIn: '15m' })
 
 const refreshToken = jwt.sign(
-    { userId: ExistingUser.id, role: ExistingUser.role },
+    { userId: ExistingUser.id, role: ExistingUser.role ,companyId: ExistingUser.companyId},
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: '7d' })
 
@@ -57,7 +62,8 @@ return { accessToken, refreshToken, user: {
     email: ExistingUser.email,
     firstName: ExistingUser.firstName,
     lastName: ExistingUser.lastName,
-    role: ExistingUser.role
+    role: ExistingUser.role,
+    companyId: ExistingUser.companyId
   } }
 }
 async function getMe(id) {
@@ -72,6 +78,8 @@ return {
     email: User.email,
     firstName: User.firstName,
     lastName: User.lastName,
-    role: User.role}
+    role: User.role , 
+    companyId: User.companyId
+}
 }
 module.exports={register,login,getMe}

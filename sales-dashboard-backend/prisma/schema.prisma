@@ -16,6 +16,8 @@ model sales {
   quantity       Int
   amount         Decimal  @db.Decimal(10, 2)
   stock_quantity Int?
+  companyId String
+  company Company @relation(fields: [companyId], references: [id])
 }
 
 model sales_alerts {
@@ -72,4 +74,5 @@ model Company{
   name String
   createdAt DateTime @default(now())
   users User[]
+  sales sales[] 
 }

@@ -1,9 +1,9 @@
 const authService = require('../services/auth.service.js')
 
 async function register(req,res){
-const{firstName,lastName,email,password}=req.body
+const{firstName,lastName,email,password,companyName}=req.body
 try{
- const inscription= await authService.register({firstName,lastName,email,password})
+ const inscription= await authService.register({firstName,lastName,email,password,companyName})
  res.status(201).json(inscription)
 }catch(error){
     if(error.code === 'EMAIL_TAKEN'){
