@@ -12,6 +12,24 @@ async function inviteUser(req,res){
     }
     return res.status(500).json({error:'Erreur serveur'})
 }
-
 }
-module.exports={inviteUser}
+async function acceptInvitation(req,res){
+    const {token,password,firstName,lastName}=req.body
+    try{
+    const acceptation=await InviteService.acceptInvitation({token,password,firstName,lastName})
+    res.status(201).json(acceptation)
+    }
+    catch(error){
+    if(error.code === 'INVITATION_NOT_FOUND'){
+      return res.status(404).json({ error: error.message }); 
+    }
+    else if (error.code === 'INVITATION_EXPIRED'){
+      return res.status(409).json({ error: error.message }); 
+    }
+    else if (error.code === 'INVITATION_ALREADY_ACCEPTED'){
+      return res.status(409).json({ error: error.message }); 
+    }
+    return res.status(500).json({error:'Erreur serveur'})
+}
+}
+module.exports={inviteUser,acceptInvitation}

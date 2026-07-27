@@ -6,6 +6,7 @@ const kpisRoutes = require('./routes/kpis.routes');
 const forecastsRoutes=require('./routes/forecasts.routes')
 const alertsRoutes=require('./routes/alerts.routes')
 const authRoutes=require('./routes/auth.routes')
+const invitationsRoutes = require('./routes/invitations.routes')
 const app = express();
 const PORT = process.env.PORT || 3000;
 const swaggerUi = require('swagger-ui-express')
@@ -29,6 +30,7 @@ app.use('/api/sales', salesRoutes);
 app.use('/api/kpis', kpisRoutes);
 app.use('/api/forecasts',forecastsRoutes);
 app.use('/api/alerts',alertsRoutes);
+app.use('/api/invitations', invitationsRoutes)
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
 
