@@ -1,5 +1,7 @@
 const prisma = require('../prisma/client');
 const bcrypt = require('bcrypt')
+const { sendInvitationEmail } = require('./email.service')
+
 async function inviteUser({email,role},companyId){
 const ExistingUser= await prisma.user.findUnique({where:{email}})
 if (ExistingUser) {
@@ -11,6 +13,7 @@ const token = require('crypto').randomBytes(32).toString('hex')
 const expiration= new Date()
 expiration.setDate(expiration.getDate() + 1)
 const invitation=await prisma.invitation.create({data:{email,companyId,token, rolePropose:role, expiration}})
+await sendInvitationEmail(email, token)
 return { invitation}
 }
 
