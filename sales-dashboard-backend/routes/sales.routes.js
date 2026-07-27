@@ -115,9 +115,9 @@ router.get('/region/:region', authenticate, salesController.getSalesByRegion);
  *       401:
  *         description: Non authentifié
  */
-router.post('/',authenticate,requireRole(),validate(SalesPayloadSchema),salesController.ajoutSale);
+router.post('/',authenticate,requireRole('ADMIN','MANAGER'),validate(SalesPayloadSchema),salesController.ajoutSale);
 
-router.post('/import',authenticate,requireRole(),upload.single('file'),salesController.importSale);
+router.post('/import',authenticate,requireRole('ADMIN','MANAGER'),upload.single('file'),salesController.importSale);
 
 
 module.exports = router;
