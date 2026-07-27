@@ -73,6 +73,17 @@ model Company{
   id String @id @default(uuid())
   name String
   createdAt DateTime @default(now())
+  invitations Invitation[]
   users User[]
   sales sales[] 
+}
+model Invitation{
+  id String @id @default(uuid())
+  email String
+  token String @unique// la preuve que l'invitation est légitime,Avec le token, seule la personne ayant reçu le vrai email (donc le vrai lien) peut accepter.
+  rolePropose Role
+  companyId String
+  company Company  @relation(fields: [companyId], references: [id])
+  expiration DateTime
+  statutAccepte Boolean @default(false)
 }
