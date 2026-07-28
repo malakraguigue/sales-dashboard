@@ -53,19 +53,6 @@ await prisma.invitation.update({
   })
 return { user: userSansMotDePasse}
 }
-async function getCompanyUsers(companyId) {
-  return prisma.user.findMany({
-    where: { companyId },
-    select: { id: true, email: true, firstName: true, lastName: true, role: true, createdAt: true }
-  })
-}
 
-async function getCompanyInvitations(companyId) {
-  return prisma.invitation.findMany({
-    where: { companyId },
-    orderBy: { expiration: 'desc' }
-  })
-}
-
-module.exports={inviteUser,acceptInvitation,getCompanyUsers,getCompanyInvitations}
+module.exports={inviteUser,acceptInvitation}
 

@@ -62,6 +62,5 @@ router.post('/invite',authenticate,requireRole('ADMIN'),InviteController.inviteU
  *         description: Invitation expiree ou deja acceptee
  */
 router.post('/accept',InviteController.acceptInvitation);
-router.get('/members', authenticate, InviteController.getMembers)
-router.get('/pending', authenticate, InviteController.getPendingInvitations)
+
 module.exports = router
