@@ -32,4 +32,24 @@ async function acceptInvitation(req,res){
     return res.status(500).json({error:'Erreur serveur'})
 }
 }
-module.exports={inviteUser,acceptInvitation}
+async function getMembers(req, res) {
+  try {
+    const members = await InviteService.getCompanyUsers(req.user.companyId)
+    res.json(members)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Erreur serveur' })
+  }
+}
+
+async function getPendingInvitations(req, res) {
+  try {
+    const invitations = await InviteService.getCompanyInvitations(req.user.companyId)
+    res.json(invitations)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Erreur serveur' })
+  }
+}
+
+module.exports={inviteUser,acceptInvitation,getMembers,getPendingInvitations}
