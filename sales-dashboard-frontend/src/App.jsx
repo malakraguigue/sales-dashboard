@@ -5,6 +5,8 @@ import AlertesPage from './pages/AlertesPage'
 import KpisPage from './pages/KpisPage'
 import ForecastsPage from './pages/ForecastsPage'
 import AuthPage from './pages/AuthPage'
+import AcceptInvitationPage from './pages/AcceptInvitationPage'
+import TeamPage from './pages/TeamPage'
 import { useAuth } from './hooks/useAuth'
 import { Routes, Route }from 'react-router-dom'
 const tabClass = (active) =>
@@ -41,12 +43,16 @@ if (!user) return <AuthPage SignUp={SignUp} LogIn={LogIn} />
           <button onClick={LogOut} className="text-sm text-[var(--accent)] underline">
             Se déconnecter
           </button>
+          <button className={tabClass(page === 'team')} onClick={() => setPage('team')}>
+            Équipe
+          </button>
         </div>
       </nav>
       {page === 'sales' && <SalesPage />}     {/* Affiche SalesPage uniquement si l'onglet actif est 'sales' */}
       {page === 'alertes' && <AlertesPage />}
       {page === 'kpis' && <KpisPage />}
       {page === 'forecasts' && <ForecastsPage />}
+      {page === 'team' && <TeamPage />}
     </div>
   )
 }
@@ -54,7 +60,7 @@ function App() {
   return (
     <Routes>{/* le conteneur — il regarde l'URL actuelle et choisit une seule des <Route> à l'intérieur pour l'afficher. */}
       <Route path="/" element={<Dashboard />} />
-      <Route path="/accepter-invitation" element={<p>Accepter l'invitation</p>} />
+      <Route path="/accepter-invitation" element={<AcceptInvitationPage /> } />
     </Routes>
   )
 }

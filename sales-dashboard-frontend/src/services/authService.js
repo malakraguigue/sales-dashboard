@@ -15,4 +15,8 @@ async function logout(){
 const response=await api.post('/auth/logout')
 return response.data
 }
-export {register,login,fetchMe,logout}
+async function acceptInvitation({ token, password, firstName, lastName }){
+const response=await api.post('/invitations/accept',{token,password,firstName,lastName})
+return response.data
+}
+export {register,login,fetchMe,logout,acceptInvitation}

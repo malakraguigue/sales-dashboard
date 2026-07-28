@@ -29,7 +29,7 @@ async function handleSubmit(e) {
      setFormError(err.response?.data?.error || 'Une erreur est survenue')
     }
 }
-    
+
     return(
         <form onSubmit={handleSubmit} className="w-full max-w-sm rounded-lg border border-[var(--border)] bg-[var(--surface)] p-8">
          <h2 className="mb-1">{mode === 'SignUp' ? "Créer un compte" : "Se connecter"}</h2>
@@ -73,4 +73,3 @@ async function handleSubmit(e) {
     )
 }
  export default LoginForm
-
